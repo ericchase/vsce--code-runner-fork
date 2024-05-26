@@ -9,8 +9,13 @@
 * Removed the quotes from customized parameters (placeholders) like `$dir`, which has been a problem for people for years.
 
 ### Build
-* Install VSCE
 * Run the `package.bat` file.
+
+### Install
+* Open `Extensions` side panel in vscode
+* Click the 3 dots
+* Click `Install from VSIX...`
+* Selet the `code-runner-0.13.0.vsix` file from the `package` subfolder
 
 ...
 

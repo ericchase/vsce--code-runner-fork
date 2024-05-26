@@ -1,5 +1,6 @@
+cmd /c npm install
 cmd /c npm run build
 pushd "package"
 cmd /c npm install
-vsce package
+npx vsce package
 popd
