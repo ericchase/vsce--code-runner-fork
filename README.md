@@ -5,17 +5,23 @@
   * `C:\Users\<user name>\AppData\Roaming\CodeRunner\tempCodeRunnerFile`
   * `./temp/tempCodeRunnerFile`
   * Environment variables (ie. `%APPDATA%`) will not be resolved. Shell expansions (ie. `~`) will not be expanded. Please provide a raw absolute path.
-  * Note: you must have permissions to create the path provided; `/tempCodeRunnerFile` will attempt to create a file in the root folder of the drive (ie. `C:/`), which might not be allowed on your file system.
+* Notes:
+  * The folder path must **exist**. You must have **permissions** to create the file in that folder path.
+  * `/tempCodeRunnerFile` will attempt to create a file in the root folder of the drive (ie. `C:/`), which might not be allowed on your file system.
+
+![Absolute Temporary File Path](example.png)
+
 * Removed the quotes from customized parameters (placeholders) like `$dir`, which has been a problem for people for years.
 
 ### Build
 * Run the `package.bat` file.
+  * I provide a pre-packaged copy of this extension under the `package` subfolder.
 
 ### Install
 * Open `Extensions` side panel in vscode
 * Click the 3 dots
 * Click `Install from VSIX...`
-* Selet the `code-runner-0.13.0.vsix` file from the `package` subfolder
+* Select the `code-runner-0.13.0.vsix` file from the `package` subfolder
 
 ...
 

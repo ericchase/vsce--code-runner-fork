@@ -236,18 +236,21 @@ export class CodeManager implements vscode.Disposable {
         // this._codeFile = join(folder, tmpFileName);
         this._codeFile = isAbsolute(tmpFileName) ? tmpFileName : resolve(folder, tmpFileName);
         try {
+          try { fs.mkdirSync(dirname(this._codeFile)) } catch(err){}
           fs.writeFileSync(this._codeFile, content);
         } catch (err) {
           const logger = vscode.window.createOutputChannel("code-runner-fork");
           logger.appendLine("Could not create file: " + this._codeFile);
-          logger.appendLine("Please check permissions or change code-runner.temporaryFileName in settings.");
+          logger.appendLine("Please make sure the folder exists. Please check folder permissions.");
+          logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
           logger.show();
         }
         fs.exists(this._codeFile, (isExist) => {
           if(isExist !== true) {
             const logger = vscode.window.createOutputChannel("code-runner-fork");
             logger.appendLine("Could not create file: " + this._codeFile);
-            logger.appendLine("Please check permissions or change code-runner.temporaryFileName in settings.");
+            logger.appendLine("Please make sure the folder exists. Please check folder permissions.");
+            logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
             logger.show();
           }
         });
