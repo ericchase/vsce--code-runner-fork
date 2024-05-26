@@ -2,7 +2,7 @@
   "name": "code-runner",
   "displayName": "Code Runner",
   "description": "Run C, C++, Java, JS, PHP, Python, Perl, Ruby, Go, Lua, Groovy, PowerShell, CMD, BASH, F#, C#, VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml, R, AppleScript, Elixir, VB.NET, Clojure, Haxe, Obj-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "featureFlags": {
     "usingNewPythonInterpreterPathApi": true,
     "usingNewPythonInterpreterPathApiV2": true
@@ -25,13 +25,13 @@
     "multi-root ready"
   ],
   "bugs": {
-    "url": "https://github.com/formulahendry/vscode-code-runner/issues",
-    "email": "formulahendry@gmail.com"
+    "url": "https://github.com/ericchase/fork--vscode-code-runner/issues",
+    "email": "github@eric.addymail.com"
   },
-  "homepage": "https://github.com/formulahendry/vscode-code-runner/blob/master/README.md",
+  "homepage": "https://github.com/ericchase/fork--vscode-code-runner",
   "repository": {
     "type": "git",
-    "url": "https://github.com/formulahendry/vscode-code-runner.git"
+    "url": "https://github.com/ericchase/fork--vscode-code-runner.git"
   },
   "sponsor": {
     "url": "https://www.patreon.com/junhan"
@@ -42,7 +42,7 @@
     "onCommand:code-runner.runByLanguage",
     "onStartupFinished"
   ],
-  "main": "./out/src/extension",
+  "main": "./extension",
   "contributes": {
     "commands": [
       {
@@ -119,7 +119,7 @@
     },
     "configuration": {
       "type": "object",
-      "title": "Run Code configuration",
+      "title": "Code Runner Fork",
       "properties": {
         "code-runner.executorMapByGlob": {
           "type": "object",
@@ -378,24 +378,9 @@
       }
     ]
   },
-  "scripts": {
-    "build": "tsc -p ./ && node ./build.mjs",
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "tslint": "tslint -t verbose src/**/*.ts"
-  },
   "dependencies": {
     "applicationinsights": "^0.19.0",
     "micromatch": "^4.0.2",
     "tree-kill": "^1.2.2"
-  },
-  "devDependencies": {
-    "@types/micromatch": "^3.1.0",
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "@types/vscode": "^1.56.0",
-    "mocha": "^6.1.4",
-    "tslint": "^5.5.0",
-    "typescript": "^3.8.3"
   }
 }

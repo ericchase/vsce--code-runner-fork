@@ -2,7 +2,7 @@
 import * as fs from "fs";
 import * as micromatch from "micromatch";
 import * as os from "os";
-import { basename, dirname, extname, join } from "path";
+import { basename, dirname, extname, resolve, isAbsolute } from "path";
 import * as vscode from "vscode";
 import { AppInsightsClient } from "./appInsightsClient";
 import { Constants } from "./constants";
@@ -233,8 +233,24 @@ export class CodeManager implements vscode.Disposable {
         const temporaryFileName = this._config.get<string>("temporaryFileName");
         const tmpFileNameWithoutExt = temporaryFileName ? temporaryFileName : "temp" + this.rndName();
         const tmpFileName = tmpFileNameWithoutExt + fileType;
-        this._codeFile = join(folder, tmpFileName);
-        fs.writeFileSync(this._codeFile, content);
+        // this._codeFile = join(folder, tmpFileName);
+        this._codeFile = isAbsolute(tmpFileName) ? tmpFileName : resolve(folder, tmpFileName);
+        try {
+          fs.writeFileSync(this._codeFile, content);
+        } catch (err) {
+          const logger = vscode.window.createOutputChannel("code-runner-fork");
+          logger.appendLine("Could not create file: " + this._codeFile);
+          logger.appendLine("Please check permissions or change code-runner.temporaryFileName in settings.");
+          logger.show();
+        }
+        fs.exists(this._codeFile, (isExist) => {
+          if(isExist !== true) {
+            const logger = vscode.window.createOutputChannel("code-runner-fork");
+            logger.appendLine("Could not create file: " + this._codeFile);
+            logger.appendLine("Please check permissions or change code-runner.temporaryFileName in settings.");
+            logger.show();
+          }
+        });
     }
 
     private getExecutor(languageId: string, fileExtension: string): string {
@@ -367,15 +383,18 @@ export class CodeManager implements vscode.Disposable {
                 // A placeholder that has to be replaced by the code file name without its extension
                 { regex: /\$fileNameWithoutExt/g, replaceValue: this.getCodeFileWithoutDirAndExt() },
                 // A placeholder that has to be replaced by the full code file name
-                { regex: /\$fullFileName/g, replaceValue: this.quoteFileName(this._codeFile) },
+                // { regex: /\$fullFileName/g, replaceValue: this.quoteFileName(this._codeFile) },
+                { regex: /\$fullFileName/g, replaceValue: this._codeFile },
                 // A placeholder that has to be replaced by the code file name without the directory
                 { regex: /\$fileName/g, replaceValue: this.getCodeBaseFile() },
                 // A placeholder that has to be replaced by the drive letter of the code file (Windows only)
                 { regex: /\$driveLetter/g, replaceValue: this.getDriveLetter() },
                 // A placeholder that has to be replaced by the directory of the code file without a trailing slash
-                { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.quoteFileName(this.getCodeFileDirWithoutTrailingSlash()) },
+                // { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.quoteFileName(this.getCodeFileDirWithoutTrailingSlash()) },
+                { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.getCodeFileDirWithoutTrailingSlash() },
                 // A placeholder that has to be replaced by the directory of the code file
-                { regex: /\$dir/g, replaceValue: this.quoteFileName(codeFileDir) },
+                // { regex: /\$dir/g, replaceValue: this.quoteFileName(codeFileDir) },
+                { regex: /\$dir/g, replaceValue: codeFileDir },
                 // A placeholder that has to be replaced by the path of Python interpreter
                 { regex: /\$pythonPath/g, replaceValue: pythonPath },
             ];
@@ -386,6 +405,7 @@ export class CodeManager implements vscode.Disposable {
         }
 
         return (cmd !== executor ? cmd : executor + (appendFile ? " " + this.quoteFileName(this._codeFile) : ""));
+        // return (cmd !== executor ? cmd : executor + (appendFile ? " " + this._codeFile : ""));
     }
 
     private changeExecutorFromCmdToPs(executor: string): string {
