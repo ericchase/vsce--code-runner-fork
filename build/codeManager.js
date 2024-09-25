@@ -209,31 +209,33 @@ class CodeManager {
         const temporaryFileName = this._config.get("temporaryFileName");
         const tmpFileNameWithoutExt = temporaryFileName ? temporaryFileName : "temp" + this.rndName();
         const tmpFileName = tmpFileNameWithoutExt + fileType;
-        // this._codeFile = join(folder, tmpFileName);
+        // ! ericchase: let user provide an absolute path
+        // ! // this._codeFile = join(folder, tmpFileName);
+        // ! // fs.writeFileSync(this._codeFile, content);
         this._codeFile = path_1.isAbsolute(tmpFileName) ? tmpFileName : path_1.resolve(folder, tmpFileName);
         try {
-            try {
-                fs.mkdirSync(path_1.dirname(this._codeFile));
-            }
-            catch (err) { }
+            fs.mkdirSync(path_1.dirname(this._codeFile), { recursive: true });
             fs.writeFileSync(this._codeFile, content);
         }
         catch (err) {
             const logger = vscode.window.createOutputChannel("code-runner-fork");
-            logger.appendLine("Could not create file: " + this._codeFile);
-            logger.appendLine("Please make sure the folder exists. Please check folder permissions.");
+            logger.appendLine(`Could not create file: ${this._codeFile}`);
+            logger.appendLine("Please check that you have permissions to create the file path.");
             logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
             logger.show();
         }
-        fs.exists(this._codeFile, (isExist) => {
-            if (isExist !== true) {
-                const logger = vscode.window.createOutputChannel("code-runner-fork");
-                logger.appendLine("Could not create file: " + this._codeFile);
-                logger.appendLine("Please make sure the folder exists. Please check folder permissions.");
-                logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
-                logger.show();
-            }
-        });
+        // ! ericchase: fs.exists was deprecated, not sure if it matters
+        // ! // fs.exists(this._codeFile, (isExist) => {
+        // ! //   if(isExist !== true) {
+        if (fs.existsSync(this._codeFile) !== true) {
+            const logger = vscode.window.createOutputChannel("code-runner-fork");
+            logger.appendLine(`Could not create file: ${this._codeFile}`);
+            logger.appendLine("Please check that you have permissions to create the file path.");
+            logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
+            logger.show();
+        }
+        // ! //   }
+        // ! // });
     }
     getExecutor(languageId, fileExtension) {
         this._languageId = languageId === null ? this._document.languageId : languageId;
@@ -350,17 +352,20 @@ class CodeManager {
                     // A placeholder that has to be replaced by the code file name without its extension
                     { regex: /\$fileNameWithoutExt/g, replaceValue: this.getCodeFileWithoutDirAndExt() },
                     // A placeholder that has to be replaced by the full code file name
-                    // { regex: /\$fullFileName/g, replaceValue: this.quoteFileName(this._codeFile) },
+                    // ! ericchase: remove the quotes
+                    // ! // { regex: /\$fullFileName/g, replaceValue: this.quoteFileName(this._codeFile) },
                     { regex: /\$fullFileName/g, replaceValue: this._codeFile },
                     // A placeholder that has to be replaced by the code file name without the directory
                     { regex: /\$fileName/g, replaceValue: this.getCodeBaseFile() },
                     // A placeholder that has to be replaced by the drive letter of the code file (Windows only)
                     { regex: /\$driveLetter/g, replaceValue: this.getDriveLetter() },
                     // A placeholder that has to be replaced by the directory of the code file without a trailing slash
-                    // { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.quoteFileName(this.getCodeFileDirWithoutTrailingSlash()) },
+                    // ! ericchase: remove the quotes
+                    // ! // { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.quoteFileName(this.getCodeFileDirWithoutTrailingSlash()) },
                     { regex: /\$dirWithoutTrailingSlash/g, replaceValue: this.getCodeFileDirWithoutTrailingSlash() },
                     // A placeholder that has to be replaced by the directory of the code file
-                    // { regex: /\$dir/g, replaceValue: this.quoteFileName(codeFileDir) },
+                    // ! ericchase: remove the quotes
+                    // ! // { regex: /\$dir/g, replaceValue: this.quoteFileName(codeFileDir) },
                     { regex: /\$dir/g, replaceValue: codeFileDir },
                     // A placeholder that has to be replaced by the path of Python interpreter
                     { regex: /\$pythonPath/g, replaceValue: pythonPath },
@@ -370,7 +375,6 @@ class CodeManager {
                 });
             }
             return (cmd !== executor ? cmd : executor + (appendFile ? " " + this.quoteFileName(this._codeFile) : ""));
-            // return (cmd !== executor ? cmd : executor + (appendFile ? " " + this._codeFile : ""));
         });
     }
     changeExecutorFromCmdToPs(executor) {
