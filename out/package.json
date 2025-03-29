@@ -1,32 +1,20 @@
 {
   "name": "code-runner",
   "displayName": "Code Runner Fork",
-  "description": "Run C, C++, Java, JS, PHP, Python, Perl, Ruby, Go, Lua, Groovy, PowerShell, CMD, BASH, F#, C#, VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml, R, AppleScript, Elixir, VB.NET, Clojure, Haxe, Obj-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam",
   "version": "0.13.2",
-  "featureFlags": {
-    "usingNewPythonInterpreterPathApi": true,
-    "usingNewPythonInterpreterPathApiV2": true
-  },
-  "publisher": "ericchase",
-  "icon": "images/logo.png",
-  "engines": {
-    "vscode": "^1.56.0"
-  },
+  "description": "Run C, C++, Java, JS, PHP, Python, Perl, Ruby, Go, Lua, Groovy, PowerShell, CMD, BASH, F#, C#, VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml, R, AppleScript, Elixir, VB.NET, Clojure, Haxe, Obj-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam",
   "categories": ["Programming Languages", "Other"],
   "keywords": ["javascript", "php", "python", "perl", "ruby", "multi-root ready"],
+  "homepage": "https://github.com/ericchase/fork--vscode-code-runner",
   "bugs": {
     "url": "https://github.com/ericchase/fork--vscode-code-runner/issues",
     "email": "github@eric.addymail.com"
   },
-  "homepage": "https://github.com/ericchase/fork--vscode-code-runner",
   "repository": {
     "type": "git",
     "url": "https://github.com/ericchase/fork--vscode-code-runner.git"
   },
-  "sponsor": {
-    "url": "https://www.patreon.com/junhan"
-  },
-  "activationEvents": ["onCommand:code-runner.run", "onCommand:code-runner.runCustomCommand", "onCommand:code-runner.runByLanguage", "onStartupFinished"],
+  "publisher": "ericchase",
   "main": "./extension.module.js",
   "contributes": {
     "commands": [
@@ -49,59 +37,6 @@
         "icon": "$(debug-stop)"
       }
     ],
-    "keybindings": [
-      {
-        "command": "code-runner.run",
-        "key": "ctrl+alt+n"
-      },
-      {
-        "command": "code-runner.runCustomCommand",
-        "key": "ctrl+alt+k"
-      },
-      {
-        "command": "code-runner.runByLanguage",
-        "key": "ctrl+alt+j"
-      },
-      {
-        "command": "code-runner.stop",
-        "key": "ctrl+alt+m"
-      }
-    ],
-    "menus": {
-      "editor/context": [
-        {
-          "when": "!inOutput && config.code-runner.showRunCommandInEditorContextMenu",
-          "command": "code-runner.run",
-          "group": "navigation"
-        },
-        {
-          "when": "inOutput && !config.code-runner.runInTerminal",
-          "command": "code-runner.stop",
-          "group": "stop-code-run"
-        }
-      ],
-      "editor/title/run": [
-        {
-          "when": "config.code-runner.showRunIconInEditorTitleMenu",
-          "command": "code-runner.run",
-          "group": "navigation"
-        }
-      ],
-      "editor/title": [
-        {
-          "when": "config.code-runner.showStopIconInEditorTitleMenu && code-runner.codeRunning",
-          "command": "code-runner.stop",
-          "group": "navigation"
-        }
-      ],
-      "explorer/context": [
-        {
-          "when": "!explorerResourceIsFolder && config.code-runner.showRunCommandInExplorerContextMenu",
-          "command": "code-runner.run",
-          "group": "navigation"
-        }
-      ]
-    },
     "configuration": {
       "type": "object",
       "title": "Code Runner Fork",
@@ -347,18 +282,83 @@
         }
       }
     },
-    "languages": [
-      {
-        "id": "code-runner-output",
-        "mimetypes": ["text/x-code-output"]
-      }
-    ],
     "grammars": [
       {
         "language": "code-runner-output",
         "scopeName": "code-runner.output",
         "path": "./syntaxes/code-runner-output.tmLanguage"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "code-runner.run",
+        "key": "ctrl+alt+n"
+      },
+      {
+        "command": "code-runner.runCustomCommand",
+        "key": "ctrl+alt+k"
+      },
+      {
+        "command": "code-runner.runByLanguage",
+        "key": "ctrl+alt+j"
+      },
+      {
+        "command": "code-runner.stop",
+        "key": "ctrl+alt+m"
+      }
+    ],
+    "languages": [
+      {
+        "id": "code-runner-output",
+        "mimetypes": ["text/x-code-output"]
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "!inOutput && config.code-runner.showRunCommandInEditorContextMenu",
+          "command": "code-runner.run",
+          "group": "navigation"
+        },
+        {
+          "when": "inOutput && !config.code-runner.runInTerminal",
+          "command": "code-runner.stop",
+          "group": "stop-code-run"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "when": "config.code-runner.showRunIconInEditorTitleMenu",
+          "command": "code-runner.run",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "config.code-runner.showStopIconInEditorTitleMenu && code-runner.codeRunning",
+          "command": "code-runner.stop",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "when": "!explorerResourceIsFolder && config.code-runner.showRunCommandInExplorerContextMenu",
+          "command": "code-runner.run",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "activationEvents": ["onCommand:code-runner.run", "onCommand:code-runner.runCustomCommand", "onCommand:code-runner.runByLanguage", "onStartupFinished"],
+  "engines": {
+    "vscode": "^1.56.0"
+  },
+  "icon": "images/logo.png",
+  "featureFlags": {
+    "usingNewPythonInterpreterPathApi": true,
+    "usingNewPythonInterpreterPathApiV2": true
+  },
+  "sponsor": {
+    "url": "https://www.patreon.com/junhan"
   }
 }

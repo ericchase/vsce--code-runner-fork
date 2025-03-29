@@ -1,4 +1,11 @@
 {
+  "type": "module",
+  "scripts": {
+    "build": "bun run tools/build.ts",
+    "dev": "bun run tools/build.ts --watch",
+    "lint": "biome lint --error-on-warnings --write",
+    "pull": "bun run tools/pull.ts"
+  },
   "dependencies": {
     "applicationinsights": "^0.19.0",
     "micromatch": "^4.0.2",
@@ -18,12 +25,5 @@
     "prettier": "^3.5.3",
     "rollup": "4.37.0",
     "xxhash-wasm": "^1.1.0"
-  },
-  "scripts": {
-    "build": "bun run tools/build.ts",
-    "dev": "bun run tools/build.ts --watch",
-    "lint": "biome lint --error-on-warnings --write",
-    "pull": "bun run tools/pull.ts"
-  },
-  "type": "module"
+  }
 }

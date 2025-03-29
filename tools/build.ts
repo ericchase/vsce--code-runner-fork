@@ -8,7 +8,6 @@ import { Step_Bun_Run } from './lib/steps/Bun-Run.js';
 import { Step_CleanDirectory } from './lib/steps/FS-CleanDirectory.js';
 import { Step_Format } from './lib/steps/FS-Format.js';
 import { Processor_JavaScript_Rollup } from './Processor-JavaScript-Rollup.js';
-import { Step_NPM_InstallDependencies } from './Step-NPM-InstallExtensionDependencies.js';
 import { Step_VSCE_Package } from './Step-VSCE-Package.js';
 
 const builder = new Builder(Bun.argv[2] === '--watch' ? 'watch' : 'build');
@@ -36,7 +35,7 @@ builder.setProcessorModules(
 builder.setAfterProcessingSteps();
 
 builder.setCleanupSteps(
-  Step_NPM_InstallDependencies(),
+  // Step_NPM_InstallDependencies(),
   Step_VSCE_Package('release'),
   //
 );
