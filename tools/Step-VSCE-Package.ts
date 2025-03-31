@@ -13,9 +13,8 @@ class CStep_VSCE_Package implements Step {
   channel = logger.newChannel();
 
   constructor(readonly release_dirpath: CPath) {}
-  async end(builder: BuilderInternal) {}
-  async run(builder: BuilderInternal) {
-    await Step_Bun_Run({ cmd: ['vsce', 'package'], dir: builder.dir.out }).run(builder);
+  async onRun(builder: BuilderInternal): Promise<void> {
+    await Step_Bun_Run({ cmd: ['vsce', 'package'], dir: builder.dir.out }).onRun?.(builder);
     for await (const path of builder.platform.Directory.globScan(builder.dir.out, '*.vsix')) {
       await builder.platform.File.move(Path(builder.dir.out, path), Path(this.release_dirpath, path), true);
     }

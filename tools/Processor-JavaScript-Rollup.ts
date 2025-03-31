@@ -3,6 +3,7 @@ import { U8StreamReadAll } from '../src/lib/ericchase/Algorithm/Stream.js';
 import { U8ToString } from '../src/lib/ericchase/Algorithm/Uint8Array.js';
 import { Logger } from '../src/lib/ericchase/Utility/Logger.js';
 import { BuilderInternal, ProcessorModule, ProjectFile } from './lib/Builder.js';
+import { module_script, ts_tsx_js_jsx } from './lib/processors/TypeScript-GenericBundler.js';
 
 const logger = Logger(Processor_JavaScript_Rollup.name);
 
@@ -25,14 +26,14 @@ class CProcessor_JavaScript_Rollup implements ProcessorModule {
     this.cmd.push('--format=cjs');
     this.cmd.push('--stdin=js');
   }
-  async onAdd(builder: BuilderInternal, files: Set<ProjectFile>) {
+  async onAdd(builder: BuilderInternal, files: Set<ProjectFile>): Promise<void> {
     for (const file of files) {
-      if (builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.module,.script}{.ts,.tsx,.jsx}')) {
+      if (builder.platform.Utility.globMatch(file.src_path.standard, `**/*${module_script}${ts_tsx_js_jsx}`)) {
         file.addProcessor(this, this.onProcess);
       }
     }
   }
-  async onRemove(builder: BuilderInternal, files: Set<ProjectFile>): Promise<void> {}
+
   async onProcess(builder: BuilderInternal, file: ProjectFile): Promise<void> {
     this.channel.log(`Rollup: "${file.src_path.raw}"`);
     const p0 = Bun.spawn(this.cmd, { stdin: await file.getBytes(), stderr: 'pipe', stdout: 'pipe' });

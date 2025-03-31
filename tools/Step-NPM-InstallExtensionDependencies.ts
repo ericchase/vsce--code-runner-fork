@@ -11,8 +11,7 @@ export function Step_NPM_InstallDependencies(): Step {
 class CStep_NPM_InstallDependencies implements Step {
   channel = logger.newChannel();
 
-  async end(builder: BuilderInternal) {}
-  async run(builder: BuilderInternal) {
-    await Step_Bun_Run({ cmd: ['bun', 'install'], dir: builder.dir.out }).run(builder);
+  async onRun(builder: BuilderInternal): Promise<void> {
+    await Step_Bun_Run({ cmd: ['bun', 'install'], dir: builder.dir.out }).onRun?.(builder);
   }
 }

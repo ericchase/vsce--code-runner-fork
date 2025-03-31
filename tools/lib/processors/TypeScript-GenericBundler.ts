@@ -4,6 +4,9 @@ import { BuilderInternal, ProcessorModule, ProjectFile } from '../Builder.js';
 
 const logger = Logger(Processor_TypeScript_GenericBundler.name);
 
+export const module_script = '{.module,.script}';
+export const ts_tsx_js_jsx = '{.ts,.tsx,.js,.jsx}';
+
 type BuildConfig = Pick<Parameters<typeof Bun.build>[0], 'define' | 'external' | 'sourcemap' | 'target'>;
 
 // External pattern cannot contain more than one "*" wildcard.
@@ -19,14 +22,14 @@ class CProcessor_TypeScript_GenericBundler implements ProcessorModule {
   constructor(readonly config: Required<BuildConfig>) {
     this.config.external.push('*.module.js');
   }
-  async onAdd(builder: BuilderInternal, files: Set<ProjectFile>) {
+  async onAdd(builder: BuilderInternal, files: Set<ProjectFile>): Promise<void> {
     let trigger_reprocess = false;
     for (const file of files) {
-      if (builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.module,.script}{.ts,.tsx,.jsx}')) {
+      if (builder.platform.Utility.globMatch(file.src_path.standard, `**/*${module_script}${ts_tsx_js_jsx}`)) {
         file.out_path.ext = '.js';
         file.addProcessor(this, this.onProcess);
         this.bundlefile_set.add(file);
-      } else if (builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.ts,.tsx,.jsx}')) {
+      } else if (builder.platform.Utility.globMatch(file.src_path.standard, `**/*${ts_tsx_js_jsx}`)) {
         trigger_reprocess = true;
       }
     }
@@ -39,9 +42,9 @@ class CProcessor_TypeScript_GenericBundler implements ProcessorModule {
   async onRemove(builder: BuilderInternal, files: Set<ProjectFile>): Promise<void> {
     let trigger_reprocess = false;
     for (const file of files) {
-      if (builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.module,.script}{.ts,.tsx,.jsx}')) {
+      if (builder.platform.Utility.globMatch(file.src_path.standard, `**/*${module_script}${ts_tsx_js_jsx}`)) {
         this.bundlefile_set.delete(file);
-      } else if (builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.ts,.tsx,.jsx}')) {
+      } else if (builder.platform.Utility.globMatch(file.src_path.standard, `**/*${ts_tsx_js_jsx}`)) {
         trigger_reprocess = true;
       }
     }
@@ -51,12 +54,13 @@ class CProcessor_TypeScript_GenericBundler implements ProcessorModule {
       }
     }
   }
+
   async onProcess(builder: BuilderInternal, file: ProjectFile): Promise<void> {
     try {
       const results = await Bun.build({
         define: this.config.define,
         entrypoints: [file.src_path.raw],
-        external: builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.module}{.ts,.tsx,.jsx}') ? this.config.external : [],
+        external: builder.platform.Utility.globMatch(file.src_path.standard, `**/*{.module}${ts_tsx_js_jsx}`) ? this.config.external : [],
         format: 'esm',
         minify: {
           identifiers: false,
@@ -66,8 +70,8 @@ class CProcessor_TypeScript_GenericBundler implements ProcessorModule {
         sourcemap: this.config.sourcemap,
         target: this.config.target,
         // add iife around scripts
-        banner: builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.script}{.ts,.tsx,.jsx}') ? '(() => {\n' : undefined,
-        footer: builder.platform.Utility.globMatch(file.src_path.standard, '**/*{.script}{.ts,.tsx,.jsx}') ? '})();' : undefined,
+        banner: builder.platform.Utility.globMatch(file.src_path.standard, `**/*{.script}${ts_tsx_js_jsx}`) ? '(() => {\n' : undefined,
+        footer: builder.platform.Utility.globMatch(file.src_path.standard, `**/*{.script}${ts_tsx_js_jsx}`) ? '})();' : undefined,
       });
       if (results.success === true) {
         for (const artifact of results.outputs) {
