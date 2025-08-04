@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.19",
+    "@types/pg": "^8.15.5"
+  },
+  "scripts": {
+    "format": "bun run tools/format.ts",
+    "start": "bun run tools/start.ts"
+  },
+  "type": "module"
+}

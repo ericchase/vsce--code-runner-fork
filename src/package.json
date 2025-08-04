@@ -1,10 +1,20 @@
 {
   "name": "code-runner",
   "displayName": "Code Runner Fork",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "Run C, C++, Java, JS, PHP, Python, Perl, Ruby, Go, Lua, Groovy, PowerShell, CMD, BASH, F#, C#, VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml, R, AppleScript, Elixir, VB.NET, Clojure, Haxe, Obj-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam",
-  "categories": ["Programming Languages", "Other"],
-  "keywords": ["javascript", "php", "python", "perl", "ruby", "multi-root ready"],
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "javascript",
+    "php",
+    "python",
+    "perl",
+    "ruby",
+    "multi-root ready"
+  ],
   "homepage": "https://github.com/ericchase/vsce--code-runner-fork",
   "bugs": {
     "url": "https://github.com/ericchase/vsce--code-runner-fork/issues",
@@ -310,7 +320,9 @@
     "languages": [
       {
         "id": "code-runner-output",
-        "mimetypes": ["text/x-code-output"]
+        "mimetypes": [
+          "text/x-code-output"
+        ]
       }
     ],
     "menus": {
@@ -349,7 +361,12 @@
       ]
     }
   },
-  "activationEvents": ["onCommand:code-runner.run", "onCommand:code-runner.runCustomCommand", "onCommand:code-runner.runByLanguage", "onStartupFinished"],
+  "activationEvents": [
+    "onCommand:code-runner.run",
+    "onCommand:code-runner.runCustomCommand",
+    "onCommand:code-runner.runByLanguage",
+    "onStartupFinished"
+  ],
   "engines": {
     "vscode": "^1.56.0"
   },

@@ -5,25 +5,23 @@
     "tree-kill": "^1.2.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
     "@types/adm-zip": "^0.5.7",
-    "@types/bun": "^1.2.8",
-    "@types/chrome": "^0.0.313",
-    "@types/node": "^22.13.14",
+    "@types/bun": "^1.2.19",
+    "@types/chrome": "^0.1.1",
+    "@types/node": "^24.2.0",
+    "adm-zip": "^0.5.16",
+    "tree-kill": "^1.2.2",
+    "xxhash-wasm": "^1.1.0",
     "@types/vscode": "^1.98.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/vsce": "^3.3.2",
-    "adm-zip": "^0.5.16",
-    "node-html-parser": "^7.0.1",
-    "prettier": "^3.5.3",
-    "rollup": "4.38.0",
-    "xxhash-wasm": "^1.1.0"
+    "rollup": "^4.46.2"
   },
   "scripts": {
     "build": "bun run tools/build.ts",
-    "dev": "bun run tools/build.ts --watch",
-    "lint": "biome lint --error-on-warnings --write",
-    "pull": "bun run tools/pull.ts"
+    "dev": "bun run tools/build.ts --dev",
+    "format": "bunx prettier --write .",
+    "pull": "bun run tools/pull-base.ts"
   },
   "type": "module"
 }
