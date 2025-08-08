@@ -1,27 +1,26 @@
 {
   "dependencies": {
-    "applicationinsights": "^0.19.0",
-    "micromatch": "^4.0.8",
-    "tree-kill": "^1.2.2"
+    "applicationinsights": "0.19.0",
+    "micromatch": "4.0.8",
+    "tree-kill": "1.2.2"
   },
   "devDependencies": {
-    "@types/adm-zip": "^0.5.7",
-    "@types/bun": "^1.2.19",
-    "@types/chrome": "^0.1.1",
-    "@types/node": "^24.2.0",
-    "adm-zip": "^0.5.16",
-    "tree-kill": "^1.2.2",
-    "xxhash-wasm": "^1.1.0",
-    "@types/vscode": "^1.98.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/vsce": "^3.3.2",
-    "rollup": "^4.46.2"
+    "@types/adm-zip": "0.5.7",
+    "@types/bun": "1.2.19",
+    "@types/chrome": "0.1.1",
+    "@types/node": "24.2.0",
+    "adm-zip": "0.5.16",
+    "tree-kill": "1.2.2",
+    "xxhash-wasm": "1.1.0",
+    "@types/vscode": "1.102.0",
+    "@vscode/test-cli": "0.0.11",
+    "@vscode/vsce": "3.6.0",
+    "rollup": "4.46.2"
   },
   "scripts": {
     "build": "bun run tools/build.ts",
     "dev": "bun run tools/build.ts --dev",
-    "format": "bunx prettier --write .",
-    "pull": "bun run tools/pull-base.ts"
+    "format": "bunx prettier --write ."
   },
   "type": "module"
 }

@@ -1,19 +1,18 @@
 {
   "dependencies": {},
   "devDependencies": {
-    "@types/adm-zip": "^0.5.7",
-    "@types/bun": "^1.2.19",
-    "@types/chrome": "^0.1.1",
-    "@types/node": "^24.2.0",
-    "adm-zip": "^0.5.16",
-    "tree-kill": "^1.2.2",
-    "xxhash-wasm": "^1.1.0"
+    "@types/adm-zip": "0.5.7",
+    "@types/bun": "1.2.19",
+    "@types/chrome": "0.1.1",
+    "@types/node": "24.2.0",
+    "adm-zip": "0.5.16",
+    "tree-kill": "1.2.2",
+    "xxhash-wasm": "1.1.0"
   },
   "scripts": {
     "build": "bun run tools/build.ts",
     "dev": "bun run tools/build.ts --dev",
-    "format": "bunx prettier --write .",
-    "pull": "bun run tools/pull-base.ts"
+    "format": "bunx prettier --write ."
   },
   "type": "module"
 }
