@@ -1,0 +1,19 @@
+{
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.tsc.autoDetect": "off",
+  "files.readonlyInclude": {
+    ".vscode/**": true,
+    "cache/**": true,
+    "coverage/**": true,
+    "out/**": true,
+    ".gitignore": true,
+    ".prettierignore": true,
+    ".prettierrc": true,
+    "bun.lock": true,
+    "package.json": true,
+    "tsconfig.json": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "format": "bunx prettier --write .",
+    "start": "bun run tools/start.ts"
+  },
+  "type": "module"
+}

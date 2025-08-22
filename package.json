@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "applicationinsights": "0.19.0",
+    "micromatch": "4.0.2",
+    "tree-kill": "1.2.2"
+  },
+  "devDependencies": {
+    "@types/bun": "1.2.20",
+    "@types/chrome": "0.1.4",
+    "@types/node": "14.16.0",
+    "tree-kill": "1.2.2",
+    "@types/micromatch": "3.1.0",
+    "@types/vscode": "1.56.0",
+    "@vscode/test-cli": "0.0.01",
+    "@vscode/vsce": "3.3.0",
+    "rollup": "4.37.0"
+  },
+  "scripts": {
+    "build": "bun run tools/build.ts",
+    "dev": "bun run tools/build.ts --dev",
+    "format": "bunx prettier --write ."
+  },
+  "type": "module"
+}

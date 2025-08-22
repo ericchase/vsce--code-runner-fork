@@ -1,0 +1,7 @@
+*-lock.json
+*-lock.yaml
+bun.lock
+
+/coverage/
+/docs/
+/tools/**/bundle/

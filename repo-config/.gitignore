@@ -1,0 +1,5 @@
+# node modules
+/out/node_modules/
+# tracking the archives is adding a lot of noise to git
+# a better flow would be to actively post releases on github
+/release/

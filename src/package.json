@@ -1,0 +1,20 @@
+{
+  "displayName": "Code Runner Fork",
+  "version": "1.0.0",
+  "publisher": "ericchase",
+  "bugs": {
+    "url": "https://github.com/ericchase/vsce--code-runner-fork/issues",
+    "email": "github@eric.addymail.com"
+  },
+  "homepage": "https://github.com/ericchase/vsce--code-runner-fork",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericchase/vsce--code-runner-fork.git"
+  },
+  "main": "./extension.module.js",
+  "contributes": {
+    "configuration": {
+      "title": "Code Runner Fork"
+    }
+  }
+}
