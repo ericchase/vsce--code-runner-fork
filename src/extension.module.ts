@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   const run = vscode.commands.registerCommand('code-runner.run', (fileUri: vscode.Uri) => {
-    codeManager.run(undefined, fileUri);
+    codeManager.run(null, fileUri);
   });
 
   const runCustomCommand = vscode.commands.registerCommand('code-runner.runCustomCommand', () => {

@@ -6,8 +6,9 @@ import { Processor_Set_Writable } from './core/processor/Processor_Set_Writable.
 import { Processor_TypeScript_Generic_Bundler } from './core/processor/Processor_TypeScript_Generic_Bundler.js';
 import { Step_Bun_Run } from './core/step/Step_Bun_Run.js';
 import { Step_FS_Clean_Directory } from './core/step/Step_FS_Clean_Directory.js';
+import { Step_FS_Move_Files } from './core/step/Step_FS_Move_Files.js';
+import { Step_Output_Merge_Files } from './core/step/Step_Output_Merge_Files.js';
 import { Processor_JavaScript_Rollup } from './lib-vscode-extension/processors/Processor_JavaScript_Rollup.js';
-import { Step_Flatten_OriginalRepo_OutDir } from './lib-vscode-extension/steps/Step_Flatten_OriginalRepo_OutDir.js';
 import { Step_VSCE_Package } from './lib-vscode-extension/steps/Step_VSCE_Package.js';
 
 // If needed, add `cache` directory to the logger's file writer.
@@ -19,7 +20,7 @@ if (BunPlatform_Argv_Includes('--dev')) {
 Builder.SetVerbosity(Builder.VERBOSITY._1_LOG);
 
 Builder.SetStartUpSteps(
-  Step_Dev_Project_Update_Config({ project_path: '.' }),
+  Step_Dev_Project_Update_Config({ project_dir: '.' }),
   // Update packages manually
   Step_Bun_Run({ cmd: ['bun', 'install'], showlogs: false }),
   Step_FS_Clean_Directory(Builder.Dir.Out),
@@ -47,16 +48,17 @@ Builder.SetProcessorModules(
   Processor_Set_Writable({
     include_patterns: [
       // src
-      'package.json',
       'CHANGELOG.md',
       'README.md',
+      'package.json',
       'example.png',
       // src/original-repo
-      'original-repo/*.md',
-      'original-repo/images/**',
-      'original-repo/syntaxes/**',
-      'original-repo/LICENSE',
-      'original-repo/package.json',
+      `original-repo/images/**`,
+      `original-repo/syntaxes/**`,
+      `original-repo/LICENSE`,
+      `original-repo/BACKERS.md`,
+      `original-repo/CHANGELOG.md`,
+      `original-repo/package.json`,
       //
     ],
     value: true,
@@ -65,10 +67,34 @@ Builder.SetProcessorModules(
 );
 
 Builder.SetCleanUpSteps(
-  // Flatten the out folder for original repo.
-  Step_Flatten_OriginalRepo_OutDir({ original_subdir: 'original-repo', merge_list: ['package.json', 'CHANGELOG.md', 'README.md'] }),
+  Step_Output_Merge_Files(
+    {
+      type: 'json',
+      merge_files: ['original-repo/package.json', 'package.json'],
+      out_file: 'package.json',
+      modify: (data: any) => {
+        // remove the spyware
+        delete data.contributes.configuration.properties['code-runner.enableAppInsights'];
+        delete data.dependencies.applicationinsights;
+        // these are for dev only
+        delete data.devDependencies;
+        delete data.scripts;
+      },
+    },
+    {
+      type: 'text',
+      merge_files: ['CHANGELOG.md', 'original-repo/CHANGELOG.md'],
+      out_file: 'CHANGELOG.md',
+    },
+  ),
+  Step_FS_Move_Files({
+    include_patterns: ['**'],
+    from_dir: `${Builder.Dir.Out}/original-repo`,
+    into_dir: Builder.Dir.Out,
+    overwrite: true,
+  }),
   Step_Dev_Format({ showlogs: false }),
-  Step_VSCE_Package({ entrypoint: 'extension.module.ts', release_dirpath: 'release' }),
+  Step_VSCE_Package({ release_dir: 'release' }),
   //
 );
 

@@ -16,29 +16,9 @@
 
 ---
 
-# Code Runner
+# Original Code Runner Readme
 
-[![Join the chat at https://gitter.im/formulahendry/vscode-code-runner](https://badges.gitter.im/formulahendry/vscode-code-runner.svg)](https://gitter.im/formulahendry/vscode-code-runner?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ![Downloads](https://img.shields.io/visual-studio-marketplace/d/formulahendry.code-runner) ![Rating](https://img.shields.io/visual-studio-marketplace/r/formulahendry.code-runner) [![Actions Status](https://github.com/formulahendry/vscode-code-runner/actions/workflows/main.yml/badge.svg)](https://github.com/formulahendry/vscode-code-runner/actions/workflows/main.yml)
-
-Run code snippet or code file for multiple languages: **C, C++, Java, JavaScript, PHP, Python, Perl, Perl 6, Ruby, Go, Lua, Groovy, PowerShell, BAT/CMD, BASH/SH, F# Script, F# (.NET Core), C# Script, C# (.NET Core), VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml Script, R, AppleScript, Elixir, Visual Basic .NET, Clojure, Haxe, Objective-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Free Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam**, and custom command
-
-## Book for VS Code
-
-[《Visual Studio Code 权威指南》](https://union-click.jd.com/jdc?e=jdext-1261348777639735296-0&p=AyIGZRhbHQsWAVIaXxEyEgRdG1sRBxU3EUQDS10iXhBeGlcJDBkNXg9JHUlSSkkFSRwSBF0bWxEHFRgMXgdIMkRxFAUJD1RQZT0cBnwKDE4%2BaDpgB2ILWStbHAIQD1QaWxIBIgdUGlsRBxEEUxprJQIXNwd1g6O0yqLkB4%2B%2FjcePwitaJQIWD1cfWhwKGwVSG1wlAhoDZc31gdeauIyr%2FsOovNLYq46cqca50ytrJQEiXABPElAeEgRSG1kQCxQBUxxZHQQQA1YTXAkDIgdUGlscChECXRs1FGwSD1UbWRALFwRWK1slASJZOxoLRlUXU1NONU9QEkdXWRlJbBUDVB9TFgAVN1caWhcA)：带你深入浅出 VS Code！
-
-![Book](images/book.jpg)
-
-## WeChat Official Account
-
-VS Code 的热门文章、使用技巧、插件推荐、插件开发攻略等，请关注“**玩转VS Code**”公众号！
-
-![WeChat](images/WeChatPublicAccount.jpg)
-
-## Donation
-
-If you like this extension, you could become a backer or sponsor via **[Patreon](https://www.patreon.com/junhan)**, donate via **[PayPal](https://www.paypal.me/junhanme)**, or scan below QR code to donate via **Alipay**. Any amount is welcome. It will encourage me to make this extension better and better!
-
-![Alipay](images/alipay.png)
+Run code snippet or code file for multiple languages: C, C++, Java, JavaScript, PHP, Python, Perl, Perl 6, Ruby, Go, Lua, Groovy, PowerShell, BAT/CMD, BASH/SH, F# Script, F# (.NET Core), C# Script, C# (.NET Core), VBScript, TypeScript, CoffeeScript, Scala, Swift, Julia, Crystal, OCaml Script, R, AppleScript, Elixir, Visual Basic .NET, Clojure, Haxe, Objective-C, Rust, Racket, Scheme, AutoHotkey, AutoIt, Kotlin, Dart, Free Pascal, Haskell, Nim, D, Lisp, Kit, V, SCSS, Sass, CUDA, Less, Fortran, Ring, Standard ML, Zig, Mojo, Erlang, SPWN, Pkl, Gleam, and custom command
 
 ## Features
 
@@ -239,25 +219,3 @@ To set whether to preserve focus on code editor after code run is triggered (def
 - To run C# script, you need to install [scriptcs](http://scriptcs.net/)
 - To run TypeScript, you need to install [ts-node](https://github.com/TypeStrong/ts-node)
 - To run Clojure, you need to install [Leiningen](https://leiningen.org/) and [lein-exec](https://github.com/kumarshantanu/lein-exec)
-
-## Telemetry data
-
-By default, telemetry data collection is turned on to understand user behavior to improve this extension. To disable it, update the settings.json as below:
-
-```json
-{
-  "code-runner.enableAppInsights": false
-}
-```
-
-## Change Log
-
-See Change Log [here](CHANGELOG.md)
-
-## Issues
-
-Submit the [issues](https://github.com/formulahendry/vscode-code-runner/issues) if you find any bug or have any suggestion.
-
-## Contribution
-
-Fork the [repo](https://github.com/formulahendry/vscode-code-runner) and submit pull requests.

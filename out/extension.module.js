@@ -1,7 +1,7 @@
 'use strict';
 
 var node_module = require('node:module');
-var vscode3 = require('vscode');
+var vscode2 = require('vscode');
 var micromatch = require('micromatch');
 var fs = require('node:fs');
 var os = require('node:os');
@@ -25,28 +25,12 @@ function _interopNamespaceDefault(e) {
   return Object.freeze(n);
 }
 
-var vscode3__namespace = /*#__PURE__*/_interopNamespaceDefault(vscode3);
+var vscode2__namespace = /*#__PURE__*/_interopNamespaceDefault(vscode2);
 var micromatch__namespace = /*#__PURE__*/_interopNamespaceDefault(micromatch);
 var fs__namespace = /*#__PURE__*/_interopNamespaceDefault(fs);
 var os__namespace = /*#__PURE__*/_interopNamespaceDefault(os);
 
 var __require = /* @__PURE__ */ node_module.createRequire((typeof document === 'undefined' ? require('u' + 'rl').pathToFileURL(__filename).href : (_documentCurrentScript && _documentCurrentScript.tagName.toUpperCase() === 'SCRIPT' && _documentCurrentScript.src || new URL('-.js', document.baseURI).href)));
-var appInsights = __require("applicationinsights");
-
-class AppInsightsClient {
-  _client;
-  _enableAppInsights;
-  constructor() {
-    this._client = appInsights.getClient("a25ddf11-20fc-45c6-96ae-524f47754f28");
-    const config = vscode3__namespace.workspace.getConfiguration("code-runner");
-    this._enableAppInsights = config.get("enableAppInsights");
-  }
-  sendEvent(eventName, properties) {
-    if (this._enableAppInsights) {
-      this._client.trackEvent(eventName === "" ? "bat" : eventName, properties);
-    }
-  }
-}
 
 // src/modified-src/constants.ts
 class Constants {
@@ -55,7 +39,7 @@ class Constants {
 class Utility {
   static async getPythonPath(document) {
     try {
-      const extension = vscode3__namespace.extensions.getExtension("ms-python.python");
+      const extension = vscode2__namespace.extensions.getExtension("ms-python.python");
       if (!extension) {
         return Constants.python;
       }
@@ -75,9 +59,9 @@ class Utility {
   }
   static getConfiguration(section, document) {
     if (document) {
-      return vscode3__namespace.workspace.getConfiguration(section, document.uri);
+      return vscode2__namespace.workspace.getConfiguration(section, document.uri);
     } else {
-      return vscode3__namespace.workspace.getConfiguration(section);
+      return vscode2__namespace.workspace.getConfiguration(section);
     }
   }
 }
@@ -98,30 +82,28 @@ class CodeManager {
   _document;
   _workspaceFolder;
   _config;
-  _appInsightsClient;
   _TERMINAL_DEFAULT_SHELL_WINDOWS = null;
   constructor() {
-    this._outputChannel = vscode3__namespace.window.createOutputChannel("Code");
+    this._outputChannel = vscode2__namespace.window.createOutputChannel("Code");
     this._terminal = null;
-    this._appInsightsClient = new AppInsightsClient;
   }
   onDidCloseTerminal() {
     this._terminal = null;
   }
   async run(languageId = null, fileUri = null) {
     if (this._isRunning) {
-      vscode3__namespace.window.showInformationMessage("Code is already running!");
+      vscode2__namespace.window.showInformationMessage("Code is already running!");
       return;
     }
     this._runFromExplorer = this.checkIsRunFromExplorer(fileUri);
     if (this._runFromExplorer) {
-      this._document = await vscode3__namespace.workspace.openTextDocument(fileUri);
+      this._document = await vscode2__namespace.workspace.openTextDocument(fileUri);
     } else {
-      const editor = vscode3__namespace.window.activeTextEditor;
+      const editor = vscode2__namespace.window.activeTextEditor;
       if (editor) {
         this._document = editor.document;
       } else {
-        vscode3__namespace.window.showInformationMessage("No code found or selected.");
+        vscode2__namespace.window.showInformationMessage("No code found or selected.");
         return;
       }
     }
@@ -129,18 +111,18 @@ class CodeManager {
     const fileExtension = node_path.extname(this._document.fileName);
     const executor = this.getExecutor(languageId, fileExtension);
     if (executor == null) {
-      vscode3__namespace.window.showInformationMessage("Code language not supported or defined.");
+      vscode2__namespace.window.showInformationMessage("Code language not supported or defined.");
       return;
     }
     this.getCodeFileAndExecute(fileExtension, executor);
   }
   runCustomCommand() {
     if (this._isRunning) {
-      vscode3__namespace.window.showInformationMessage("Code is already running!");
+      vscode2__namespace.window.showInformationMessage("Code is already running!");
       return;
     }
     this._runFromExplorer = false;
-    const editor = vscode3__namespace.window.activeTextEditor;
+    const editor = vscode2__namespace.window.activeTextEditor;
     if (editor) {
       this._document = editor.document;
     }
@@ -154,24 +136,22 @@ class CodeManager {
     }
   }
   runByLanguage() {
-    this._appInsightsClient.sendEvent("runByLanguage");
     const config = this.getConfiguration("code-runner");
     const executorMap = config.get("executorMap");
-    vscode3__namespace.window.showQuickPick(Object.keys(executorMap), { placeHolder: "Type or select language to run" }).then((languageId) => {
+    vscode2__namespace.window.showQuickPick(Object.keys(executorMap), { placeHolder: "Type or select language to run" }).then((languageId) => {
       if (languageId !== undefined) {
         this.run(languageId);
       }
     });
   }
   stop() {
-    this._appInsightsClient.sendEvent("stop");
     this.stopRunning();
   }
   dispose() {
     this.stopRunning();
   }
   checkIsRunFromExplorer(fileUri) {
-    const editor = vscode3__namespace.window.activeTextEditor;
+    const editor = vscode2__namespace.window.activeTextEditor;
     if (!fileUri || !fileUri.fsPath) {
       return false;
     }
@@ -186,7 +166,7 @@ class CodeManager {
   stopRunning() {
     if (this._isRunning) {
       this._isRunning = false;
-      vscode3__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", false);
+      vscode2__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", false);
       const kill = __require("tree-kill");
       kill(this._process.pid);
     }
@@ -212,21 +192,21 @@ class CodeManager {
     return Utility.getConfiguration(section, this._document);
   }
   getWorkspaceFolder() {
-    if (vscode3__namespace.workspace.workspaceFolders) {
+    if (vscode2__namespace.workspace.workspaceFolders) {
       if (this._document) {
-        const workspaceFolder = vscode3__namespace.workspace.getWorkspaceFolder(this._document.uri);
+        const workspaceFolder = vscode2__namespace.workspace.getWorkspaceFolder(this._document.uri);
         if (workspaceFolder) {
           return workspaceFolder.uri.fsPath;
         }
       }
-      return vscode3__namespace.workspace.workspaceFolders[0].uri.fsPath;
+      return vscode2__namespace.workspace.workspaceFolders[0].uri.fsPath;
     } else {
       return;
     }
   }
   getCodeFileAndExecute(fileExtension, executor, appendFile = true) {
     let selection;
-    const activeTextEditor = vscode3__namespace.window.activeTextEditor;
+    const activeTextEditor = vscode2__namespace.window.activeTextEditor;
     if (activeTextEditor) {
       selection = activeTextEditor.selection;
     }
@@ -235,7 +215,7 @@ class CodeManager {
       this._isTmpFile = false;
       this._codeFile = this._document.fileName;
       if (this._config.get("saveAllFilesBeforeRun")) {
-        return vscode3__namespace.workspace.saveAll().then(() => {
+        return vscode2__namespace.workspace.saveAll().then(() => {
           this.executeCommand(executor, appendFile);
         });
       }
@@ -282,14 +262,14 @@ class CodeManager {
       fs__namespace.mkdirSync(node_path.dirname(this._codeFile), { recursive: true });
       fs__namespace.writeFileSync(this._codeFile, content);
     } catch (err) {
-      const logger = vscode3__namespace.window.createOutputChannel("code-runner-fork");
+      const logger = vscode2__namespace.window.createOutputChannel("code-runner-fork");
       logger.appendLine(`Could not create file: ${this._codeFile}`);
       logger.appendLine("Please check that you have permissions to create the file path.");
       logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
       logger.show();
     }
     if (fs__namespace.existsSync(this._codeFile) !== true) {
-      const logger = vscode3__namespace.window.createOutputChannel("code-runner-fork");
+      const logger = vscode2__namespace.window.createOutputChannel("code-runner-fork");
       logger.appendLine(`Could not create file: ${this._codeFile}`);
       logger.appendLine("Please check that you have permissions to create the file path.");
       logger.appendLine("If all else fails, please use a different path for code-runner.temporaryFileName in settings.");
@@ -400,7 +380,7 @@ class CodeManager {
   }
   isPowershellOnWindows() {
     if (os__namespace.platform() === "win32") {
-      const defaultProfile = vscode3__namespace.workspace.getConfiguration("terminal").get("integrated.defaultProfile.windows");
+      const defaultProfile = vscode2__namespace.workspace.getConfiguration("terminal").get("integrated.defaultProfile.windows");
       if (defaultProfile) {
         if (defaultProfile.toLowerCase().includes("powershell")) {
           return true;
@@ -408,14 +388,14 @@ class CodeManager {
           return false;
         }
       }
-      const windowsShell = vscode3__namespace.env.shell;
+      const windowsShell = vscode2__namespace.env.shell;
       return windowsShell && windowsShell.toLowerCase().includes("powershell");
     }
     return false;
   }
   changeFilePathForBashOnWindows(command) {
     if (os__namespace.platform() === "win32") {
-      const windowsShell = vscode3__namespace.env.shell;
+      const windowsShell = vscode2__namespace.env.shell;
       const terminalRoot = this._config.get("terminalRoot");
       if (windowsShell && terminalRoot) {
         command = command.replace(/([A-Za-z]):\\/g, (match, p1) => `${terminalRoot}${p1.toLowerCase()}/`).replace(/\\/g, "/");
@@ -431,16 +411,15 @@ class CodeManager {
   async executeCommandInTerminal(executor, appendFile = true) {
     let isNewTerminal = false;
     if (this._terminal === null) {
-      this._terminal = vscode3__namespace.window.createTerminal("Code");
+      this._terminal = vscode2__namespace.window.createTerminal("Code");
       isNewTerminal = true;
     }
     this._terminal.show(this._config.get("preserveFocus"));
-    this.sendRunEvent(executor, true);
     executor = this.changeExecutorFromCmdToPs(executor);
     let command = await this.getFinalCommandToRunCodeFile(executor, appendFile);
     command = this.changeFilePathForBashOnWindows(command);
     if (this._config.get("clearPreviousOutput") && !isNewTerminal) {
-      await vscode3__namespace.commands.executeCommand("workbench.action.terminal.clear");
+      await vscode2__namespace.commands.executeCommand("workbench.action.terminal.clear");
     }
     if (this._config.get("fileDirectoryAsCwd")) {
       const cwd = this.changeFilePathForBashOnWindows(this._cwd);
@@ -450,7 +429,7 @@ class CodeManager {
   }
   async executeCommandInOutputChannel(executor, appendFile = true) {
     this._isRunning = true;
-    vscode3__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", true);
+    vscode2__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", true);
     const clearPreviousOutput = this._config.get("clearPreviousOutput");
     if (clearPreviousOutput) {
       this._outputChannel.clear();
@@ -462,7 +441,6 @@ class CodeManager {
     if (showExecutionMessage) {
       this._outputChannel.appendLine("[Running] " + command);
     }
-    this.sendRunEvent(executor, false);
     const startTime = new Date;
     this._process = spawn(command, [], { cwd: this._cwd, shell: true });
     this._process.stdout.on("data", (data) => {
@@ -473,7 +451,7 @@ class CodeManager {
     });
     this._process.on("close", (code) => {
       this._isRunning = false;
-      vscode3__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", false);
+      vscode2__namespace.commands.executeCommand("setContext", "code-runner.codeRunning", false);
       const endTime = new Date;
       const elapsedTime = (endTime.getTime() - startTime.getTime()) / 1000;
       this._outputChannel.appendLine("");
@@ -486,32 +464,24 @@ class CodeManager {
       }
     });
   }
-  sendRunEvent(executor, runFromTerminal) {
-    const properties = {
-      runFromTerminal: runFromTerminal.toString(),
-      runFromExplorer: this._runFromExplorer.toString(),
-      isTmpFile: this._isTmpFile.toString()
-    };
-    this._appInsightsClient.sendEvent(executor, properties);
-  }
 }
 
 // src/extension.module.ts
 function activate(context) {
   const codeManager = new CodeManager;
-  vscode3__namespace.window.onDidCloseTerminal(() => {
+  vscode2__namespace.window.onDidCloseTerminal(() => {
     codeManager.onDidCloseTerminal();
   });
-  const run = vscode3__namespace.commands.registerCommand("code-runner.run", (fileUri) => {
-    codeManager.run(undefined, fileUri);
+  const run = vscode2__namespace.commands.registerCommand("code-runner.run", (fileUri) => {
+    codeManager.run(null, fileUri);
   });
-  const runCustomCommand = vscode3__namespace.commands.registerCommand("code-runner.runCustomCommand", () => {
+  const runCustomCommand = vscode2__namespace.commands.registerCommand("code-runner.runCustomCommand", () => {
     codeManager.runCustomCommand();
   });
-  const runByLanguage = vscode3__namespace.commands.registerCommand("code-runner.runByLanguage", () => {
+  const runByLanguage = vscode2__namespace.commands.registerCommand("code-runner.runByLanguage", () => {
     codeManager.runByLanguage();
   });
-  const stop = vscode3__namespace.commands.registerCommand("code-runner.stop", () => {
+  const stop = vscode2__namespace.commands.registerCommand("code-runner.stop", () => {
     codeManager.stop();
   });
   context.subscriptions.push(run);

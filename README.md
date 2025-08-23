@@ -1,18 +1,12 @@
 ## Code Runner Fork
 
+Original code base is under `src/original-repo`. I reset the main branch history because this is no longer a fork. It is more of a wrapper, now. The old history can be found on branch `0.13.0`.
+
+Check [README.md](./src/README.md) under the `src` folder for more information about the extension.
+
 ### Changes
 
-- Changed `Temporary File Name` setting to resolve absolute and relative paths, instead of only just a file name. ie:
-  - `C:\Users\<user name>\AppData\Roaming\CodeRunner\tempCodeRunnerFile`
-  - `./temp/tempCodeRunnerFile`
-  - Environment variables (ie. `%APPDATA%`) will not be resolved. Shell expansions (ie. `~`) will not be expanded. Please provide a raw absolute or relative path.
-- Notes:
-  - You must have **permissions** to create the file path provided.
-  - `/tempCodeRunnerFile` will attempt to create a file in the root folder of the drive (ie. `C:/`), which might not be allowed on your file system.
-
-![Absolute Temporary File Path](example.png)
-
-- Removed the quotes from customized parameters (placeholders) like `$dir`, which has been a problem for people for years.
+Check [CHANGELOG.md](./src/CHANGELOG.md) under the `src` folder.
 
 ## Build Tools V4
 
