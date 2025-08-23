@@ -1,7 +1,7 @@
 ### (2025-08-22) 1.0.0
 
 - Upgraded project to build tools v4
-- Removed telemtry code (`applicationinsights`)
+- Removed telemetry code (`applicationinsights`)
 
 ### (2024-09-25) 0.13.1
 
