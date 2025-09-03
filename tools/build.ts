@@ -8,6 +8,7 @@ import { Processor_TypeScript_Generic_Bundler } from './core/processor/Processor
 import { Step_Bun_Run } from './core/step/Step_Bun_Run.js';
 import { Step_FS_Clean_Directory } from './core/step/Step_FS_Clean_Directory.js';
 import { Step_FS_Copy_Files } from './core/step/Step_FS_Copy_Files.js';
+import { Step_FS_Delete_Directory } from './core/step/Step_FS_Delete_Directory.js';
 import { Step_FS_Move_Files } from './core/step/Step_FS_Move_Files.js';
 import { Processor_JavaScript_Rollup } from './lib-vscode-extension/processors/Processor_JavaScript_Rollup.js';
 import { Step_VSCE_Package } from './lib-vscode-extension/steps/Step_VSCE_Package.js';
@@ -23,6 +24,7 @@ Builder.SetVerbosity(Builder.VERBOSITY._1_LOG);
 Builder.SetStartUpSteps(
   Step_Dev_Project_Update_Config({ project_dir: '.' }),
   // Update packages manually
+  // Step_Bun_Run({ cmd: ['bun', 'update', '--latest'], showlogs: false }),
   Step_Bun_Run({ cmd: ['bun', 'install'], showlogs: false }),
   Step_FS_Clean_Directory(Builder.Dir.Out),
   //
@@ -42,16 +44,16 @@ const external = [
 
 Builder.SetProcessorModules(
   // Bundle the IIFE scripts and module scripts.
-  // Processor_TypeScript_Generic_Bundler({ target: 'node' }, { bundler_mode: 'iife' }),
+  Processor_TypeScript_Generic_Bundler({ target: 'node' }, { bundler_mode: 'iife', exclude_patterns: ['lib/server/hot-reload.iife.ts'] }),
   Processor_TypeScript_Generic_Bundler({ external, target: 'node' }, { bundler_mode: 'module' }),
   Processor_JavaScript_Rollup({ external }),
   // Write non-bundle and non-library files.
   Processor_Set_Writable({
     include_patterns: [
       // src
+      'package.json',
       'CHANGELOG.md',
       'README.md',
-      'package.json',
       'example.png',
       // src/original-repo
       `original-repo/images/**`,
@@ -102,6 +104,7 @@ Builder.SetCleanUpSteps(
     into_dir: Builder.Dir.Out,
     overwrite: true,
   }),
+  Step_FS_Delete_Directory(`${Builder.Dir.Out}/original-repo`),
   Step_Dev_Format({ showlogs: false }),
   Step_VSCE_Package({ release_dir: 'release' }),
   //
